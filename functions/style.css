@@ -231,6 +231,16 @@ footer {
     border-color: #d0cb31 !important;
 }
 
+._20x-ticket {
+    background-color: #0487b8 !important;
+    border-color: #00bbff;
+}
+
+._25x-ticket {
+    background-color: #52af27 !important;
+    border-color: #51c11d !important;
+}
+
 .ticket-logo {
     width: 100%;
     height: 100%;
