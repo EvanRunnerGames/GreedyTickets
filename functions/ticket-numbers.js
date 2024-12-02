@@ -1,4 +1,4 @@
-// Constant for cash amount key in localStorage
+// Define key for storing cash amount in localStorage
 const CASH_AMOUNT_KEY = 'cashAmount';
 
 // Save the cash amount to localStorage
@@ -11,9 +11,9 @@ function loadCashAmount() {
     return parseInt(localStorage.getItem(CASH_AMOUNT_KEY), 10) || 0;
 }
 
-// Utility to generate random numbers
+// Utility to generate random numbers (between 1 and 30)
 function generateRandomNumber() {
-    return Math.floor(Math.random() * 30) + 1; // Generates a number between 1 and 30
+    return Math.floor(Math.random() * 30) + 1;
 }
 
 // Initialize random numbers for all hidden-number elements
@@ -81,7 +81,7 @@ function checkMatches(numberElement) {
         numberElement.classList.add('matched');
     }
 
-    saveCashAmount(cashAmount);
+    saveCashAmount(cashAmount); // Save updated cash amount to localStorage
     updateCashDisplay(cashAmount);
 
     // Reset selected number after checking
@@ -96,7 +96,7 @@ function updateCashDisplay(cashAmount) {
     }
 }
 
-// Attach event listeners
+// Attach event listeners to the elements
 function setupEventListeners() {
     document.querySelectorAll('.winning-number').forEach((winningNumberElement) => {
         winningNumberElement.addEventListener('click', handleWinningNumberClick);
@@ -121,7 +121,7 @@ function resetGame() {
 // Initialize the game
 function initializeGame() {
     initializeHiddenNumbers();
-    updateCashDisplay(loadCashAmount());
+    updateCashDisplay(loadCashAmount()); // Load and display the saved cash amount
     setupEventListeners();
 }
 
@@ -130,8 +130,8 @@ initializeGame();
 
 // Function to handle the /set command for setting the cash amount
 function setCashAmount(newAmount) {
-    saveCashAmount(newAmount);
-    updateCashDisplay(newAmount);
+    saveCashAmount(newAmount); // Save the new amount to localStorage
+    updateCashDisplay(newAmount); // Update the displayed cash amount
 }
 
 // Console command for setting the cash amount
