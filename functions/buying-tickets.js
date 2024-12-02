@@ -38,7 +38,7 @@ function handleTicketClick(event) {
 
 // Function to set up ticket event listeners
 function setupTicketEventListeners() {
-    // Get all ticket elements
+    // Get all ticket elements (assumes ticket-claim is an anchor tag)
     const ticketElements = document.querySelectorAll('.ticket-claim');
 
     // Iterate over each ticket element
@@ -58,6 +58,7 @@ function setupTicketEventListeners() {
             // Enable click functionality for eligible tickets
             ticketElement.style.opacity = '1';
             ticketElement.style.pointerEvents = 'auto';
+            ticketElement.setAttribute('href', ticketElement.getAttribute('href') || '#');  // Ensure href exists
             ticketElement.addEventListener('click', handleTicketClick);
         }
     });
