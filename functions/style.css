@@ -21,6 +21,13 @@ a {
     text-decoration: none;
 }
 
+a.disabled {
+    pointer-events: none; /* Disables clicking */
+    cursor: not-allowed; /* Changes cursor to indicate it's disabled */
+    color: gray; /* Optional: Change text color */
+}
+
+
 .cash-counter {
     width: fit-content;
     background: linear-gradient(#5ed91c, #195f06);
