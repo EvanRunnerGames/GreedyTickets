@@ -41,7 +41,7 @@ function handleTicketSelection(event) {
     }
 }
 
-// Function to disable tickets that cannot be afforded
+// Function to disable tickets that cannot be afforded and gray them out
 function setupTickets() {
     const ticketLinks = document.querySelectorAll('.ticket-claim a');
 
@@ -50,17 +50,19 @@ function setupTickets() {
         const price = priceText.includes('FREE') ? 0 : parseInt(priceText.replace('$', '').trim(), 10);
         const currentCash = loadCashAmount();
 
+        const ticketContainer = ticketLink.parentElement; // Get the container for styling
+
         if (currentCash < price) {
-            // If user can't afford the ticket, make it unclickable
+            // If user can't afford the ticket, make it unclickable and gray it out
             ticketLink.classList.add('disabled');
             ticketLink.style.pointerEvents = 'none';
-            ticketLink.style.opacity = '0.5';
+            ticketContainer.style.opacity = '0.5';
             console.log(`Ticket disabled: Price $${price}, Current Cash $${currentCash}`);
         } else {
             // Otherwise, make the ticket clickable
             ticketLink.classList.remove('disabled');
             ticketLink.style.pointerEvents = 'auto';
-            ticketLink.style.opacity = '1';
+            ticketContainer.style.opacity = '1';
             ticketLink.addEventListener('click', handleTicketSelection);
         }
     });
