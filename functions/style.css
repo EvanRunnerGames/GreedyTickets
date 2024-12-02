@@ -119,6 +119,23 @@ footer {
     flex-direction: column;
 }
 
+.ticket-title {
+    text-shadow: 
+    2px 2px 0px white,   /* Right & Bottom */
+    -2px -2px 0px white, /* Left & Top */
+    2px -2px 0px white,  /* Right & Top */
+    -2px 2px 0px white;  /* Left & Bottom */
+    color: orange;
+    text-align: center;
+    font-size: larger;
+    height: 120px;
+    margin-top: 0px;
+    padding: 0px;
+    width: 100%;
+    background-color: #00a5e6;
+
+}
+
 .text {
     text-shadow: 
         2px 2px 0px black,   /* Right & Bottom */
@@ -158,7 +175,14 @@ footer {
     display: inline-block;
     width: 65px;
     height: 65px;
-    
+    cursor: pointer;
+}
+
+.price {
+    position: absolute;
+    background-color: transparent;
+    transform: translate(10px, -10px);
+    font-size: 16px;
 }
 
 .hidden-number {
@@ -197,11 +221,14 @@ footer {
 
 .ticket-content {
     width: 390px;
-    margin-bottom: 10px;
     background-color: #fe9733 !important;
     border: #ff8d2a solid 5px;
     height: fit-content;
-    margin: 10px;
+}
+
+._10x-ticket {
+    background-color: #f9eb2d !important;
+    border-color: #d0cb31 !important;
 }
 
 .ticket-logo {

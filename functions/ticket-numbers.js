@@ -1,19 +1,14 @@
+// Constant for cash amount key in localStorage
 const CASH_AMOUNT_KEY = 'cashAmount';
 
-// Save the cash amount as JSON to localStorage
+// Save the cash amount to localStorage
 function saveCashAmount(amount) {
-    const data = { cashAmount: amount };
-    localStorage.setItem(CASH_AMOUNT_KEY, JSON.stringify(data)); // Store as JSON string
+    localStorage.setItem(CASH_AMOUNT_KEY, amount);
 }
 
 // Load the cash amount from localStorage
 function loadCashAmount() {
-    const data = localStorage.getItem(CASH_AMOUNT_KEY);
-    if (data) {
-        const parsedData = JSON.parse(data);
-        return parsedData.cashAmount || 0;
-    }
-    return 0;
+    return parseInt(localStorage.getItem(CASH_AMOUNT_KEY), 10) || 0;
 }
 
 // Utility to generate random numbers
@@ -114,7 +109,7 @@ function setupEventListeners() {
 
 // Reset game data
 function resetGame() {
-    localStorage.setItem('cashAmount', '0');
+    localStorage.setItem(CASH_AMOUNT_KEY, '0');
     updateCashDisplay(0);
     initializeHiddenNumbers();
     // Remove the 'matched' class from all numbers
