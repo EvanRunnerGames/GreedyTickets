@@ -18,7 +18,8 @@ function updateCashDisplay(cashAmount) {
 
 // Function to handle ticket click
 function handleTicketClick(event) {
-    const ticketPriceElement = event.currentTarget.querySelector('.price');
+    const ticketElement = event.currentTarget;
+    const ticketPriceElement = ticketElement.querySelector('.price');
     const ticketPrice = parseInt(ticketPriceElement.textContent.replace('$', '').trim(), 10);
     let currentCash = loadCashAmount();
 
@@ -30,7 +31,7 @@ function handleTicketClick(event) {
         updateCashDisplay(currentCash);
         console.log(`Ticket bought for $${ticketPrice}. Remaining cash: $${currentCash}`);
     } else {
-        // Disable the ticket if not enough cash
+        // Prevent default action
         event.preventDefault();
         console.log('Not enough cash to buy this ticket.');
     }
@@ -39,23 +40,26 @@ function handleTicketClick(event) {
 // Function to set up ticket event listeners
 function setupTicketEventListeners() {
     // Get all ticket elements
-    const ticketElements = document.querySelectorAll('.ticket-claim');
+    const ticketLinks = document.querySelectorAll('.ticket-claim a');
 
     // Add click event listeners to all ticket elements
-    ticketElements.forEach(ticketElement => {
+    ticketLinks.forEach(linkElement => {
+        const ticketElement = linkElement.closest('.ticket-claim');
         const ticketPriceElement = ticketElement.querySelector('.price');
         const ticketPrice = parseInt(ticketPriceElement.textContent.replace('$', '').trim(), 10);
         
-        // Disable the link if price is higher than user's current cash
         let currentCash = loadCashAmount();
+
+        // Disable the link if price is higher than user's current cash
         if (currentCash < ticketPrice) {
-            ticketElement.style.opacity = '0.5';  // Reduce opacity to indicate it's disabled
-            ticketElement.style.pointerEvents = 'none';  // Disable clicks
+            linkElement.classList.add('disabled');
+            linkElement.removeAttribute('href'); // Remove href to disable navigation
+            ticketElement.style.opacity = '0.5';  // Indicate it's disabled
+            console.log(`Ticket disabled: Not enough cash for ticket priced at $${ticketPrice}`);
         } else {
-            // Enable click functionality
-            ticketElement.style.opacity = '1';
-            ticketElement.style.pointerEvents = 'auto';
-            ticketElement.addEventListener('click', handleTicketClick);
+            linkElement.classList.remove('disabled');
+            ticketElement.style.opacity = '1'; // Restore appearance
+            linkElement.addEventListener('click', handleTicketClick);
         }
     });
 }
