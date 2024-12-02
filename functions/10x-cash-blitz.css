@@ -1,0 +1,15 @@
+.ticket-topinfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.ticket-content {
+    background-color: #fff22d;
+}
+
+.chances-tw {
+    border: black solid 4px;
+    color: #7eb9de;
+}
