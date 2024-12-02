@@ -8,6 +8,8 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
+    
+    
 }
 
 * {
@@ -106,9 +108,31 @@ footer {
     flex-shrink: 0; /* Prevent shrinking of the items */
 }
 
+.rolling-high-ticket {
+    background: linear-gradient(#f7cd39, #5eaf6b);
+    border-color: #172d1a !important;
+}
+
+.rolling-high-max {
+    text-shadow: 
+    0.2px 0.2px 0px black,   /* Right & Bottom */
+    -0.2px -0.2px 0px black, /* Left & Top */
+    0.2px -0.2px 0px black,  /* Right & Top */
+    -0.2px 0.2px 0px black;  /* Left & Bottom */
+    color: black !important;
+    text-align: center;
+    width: 100%;
+    background: radial-gradient(#f5a623, #de4e0c);
+}
+
+.rolling-high-title {
+    color: #e30011 !important;
+    border-color: #13027c !important;
+}
 
 .ticket {
     width: 400px;
+
     height: fit-content;
     min-height: 200px;
     background-color: #272526;
