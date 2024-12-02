@@ -38,7 +38,7 @@ function handleTicketClick(event) {
 
 // Function to set up ticket event listeners
 function setupTicketEventListeners() {
-    // Get all ticket elements (assumes ticket-claim is an anchor tag)
+    // Get all ticket elements
     const ticketElements = document.querySelectorAll('.ticket-claim');
 
     // Iterate over each ticket element
@@ -49,17 +49,20 @@ function setupTicketEventListeners() {
         // Get the current cash amount
         let currentCash = loadCashAmount();
 
+        // Access the parent <a> tag
+        const linkElement = ticketElement.closest('a');
+
         // If the price is higher than the user's current cash, disable the ticket
         if (currentCash < ticketPrice) {
-            ticketElement.style.opacity = '0.5';  // Reduce opacity to indicate it's disabled
-            ticketElement.style.pointerEvents = 'none';  // Disable clicks
-            ticketElement.setAttribute('href', '#'); // Change href to '#'
+            linkElement.classList.add('disabled-ticket');  // Add the disabled class to <a>
+            linkElement.setAttribute('href', '#');         // Change href to '#'
+            linkElement.style.pointerEvents = 'none';      // Disable clicks on the <a> tag
         } else {
             // Enable click functionality for eligible tickets
-            ticketElement.style.opacity = '1';
-            ticketElement.style.pointerEvents = 'auto';
-            ticketElement.setAttribute('href', ticketElement.getAttribute('href') || '#');  // Ensure href exists
-            ticketElement.addEventListener('click', handleTicketClick);
+            linkElement.classList.remove('disabled-ticket'); // Remove the disabled class from <a>
+            linkElement.style.opacity = '1';                 // Ensure opacity is normal
+            linkElement.style.pointerEvents = 'auto';        // Enable clicks on the <a> tag
+            linkElement.addEventListener('click', handleTicketClick);
         }
     });
 }

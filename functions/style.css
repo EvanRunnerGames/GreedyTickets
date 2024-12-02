@@ -21,11 +21,13 @@ a {
     text-decoration: none;
 }
 
-a.disabled {
-    pointer-events: none; /* Disables clicking */
-    cursor: not-allowed; /* Changes cursor to indicate it's disabled */
-    color: gray; /* Optional: Change text color */
+.disabled-ticket {
+    opacity: 0.5;  /* Make the ticket look faded */
+    color: grey;   /* Change text color */
+    pointer-events: none; /* Disable clicking */
+    text-decoration: none; /* Remove underline */
 }
+
 
 
 .cash-counter {
