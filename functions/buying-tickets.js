@@ -1,14 +1,17 @@
-// Function to load the current cash amount from localStorage
+// Constant for the cash amount key in localStorage
+const CASH_AMOUNT_KEY = 'cashAmount';
+
+// Load the current cash amount from localStorage
 function loadCashAmount() {
-    return parseInt(localStorage.getItem('cashAmount'), 10) || 0;
+    return parseInt(localStorage.getItem(CASH_AMOUNT_KEY), 10) || 0;
 }
 
-// Function to save the current cash amount to localStorage
+// Save the current cash amount to localStorage
 function saveCashAmount(amount) {
-    localStorage.setItem('cashAmount', amount);
+    localStorage.setItem(CASH_AMOUNT_KEY, amount);
 }
 
-// Function to update the cash display
+// Function to update the displayed cash amount
 function updateCashDisplay(cashAmount) {
     const cashCounter = document.querySelector('#cash-amount');
     if (cashCounter) {
@@ -16,59 +19,58 @@ function updateCashDisplay(cashAmount) {
     }
 }
 
-// Function to handle ticket click
-function handleTicketClick(event) {
+// Function to handle ticket selection
+function handleTicketSelection(event) {
+    event.preventDefault(); // Prevent navigation by default
     const ticketElement = event.currentTarget;
-    const ticketPriceElement = ticketElement.querySelector('.price');
-    const ticketPrice = parseInt(ticketPriceElement.textContent.replace('$', '').trim(), 10);
+    const priceText = ticketElement.querySelector('.price').textContent;
+    const price = priceText.includes('FREE') ? 0 : parseInt(priceText.replace('$', '').trim(), 10);
     let currentCash = loadCashAmount();
 
-    // Check if the user has enough cash
-    if (currentCash >= ticketPrice) {
-        // Deduct the price from the user's cash
-        currentCash -= ticketPrice;
+    if (currentCash >= price) {
+        // Deduct ticket price from cash and update the display
+        currentCash -= price;
         saveCashAmount(currentCash);
         updateCashDisplay(currentCash);
-        console.log(`Ticket bought for $${ticketPrice}. Remaining cash: $${currentCash}`);
+        console.log(`Ticket purchased for $${price}. Remaining cash: $${currentCash}`);
+        // Allow navigation after purchase
+        window.location.href = ticketElement.href;
     } else {
-        // Prevent default action
-        event.preventDefault();
         console.log('Not enough cash to buy this ticket.');
+        alert('Not enough cash to purchase this ticket.');
     }
 }
 
-// Function to set up ticket event listeners
-function setupTicketEventListeners() {
-    // Get all ticket elements
+// Function to disable tickets that cannot be afforded
+function setupTickets() {
     const ticketLinks = document.querySelectorAll('.ticket-claim a');
 
-    // Add click event listeners to all ticket elements
-    ticketLinks.forEach(linkElement => {
-        const ticketElement = linkElement.closest('.ticket-claim');
-        const ticketPriceElement = ticketElement.querySelector('.price');
-        const ticketPrice = parseInt(ticketPriceElement.textContent.replace('$', '').trim(), 10);
-        
-        let currentCash = loadCashAmount();
+    ticketLinks.forEach(ticketLink => {
+        const priceText = ticketLink.querySelector('.price').textContent;
+        const price = priceText.includes('FREE') ? 0 : parseInt(priceText.replace('$', '').trim(), 10);
+        const currentCash = loadCashAmount();
 
-        // Disable the link if price is higher than user's current cash
-        if (currentCash < ticketPrice) {
-            linkElement.classList.add('disabled');
-            linkElement.removeAttribute('href'); // Remove href to disable navigation
-            ticketElement.style.opacity = '0.5';  // Indicate it's disabled
-            console.log(`Ticket disabled: Not enough cash for ticket priced at $${ticketPrice}`);
+        if (currentCash < price) {
+            // If user can't afford the ticket, make it unclickable
+            ticketLink.classList.add('disabled');
+            ticketLink.style.pointerEvents = 'none';
+            ticketLink.style.opacity = '0.5';
+            console.log(`Ticket disabled: Price $${price}, Current Cash $${currentCash}`);
         } else {
-            linkElement.classList.remove('disabled');
-            ticketElement.style.opacity = '1'; // Restore appearance
-            linkElement.addEventListener('click', handleTicketClick);
+            // Otherwise, make the ticket clickable
+            ticketLink.classList.remove('disabled');
+            ticketLink.style.pointerEvents = 'auto';
+            ticketLink.style.opacity = '1';
+            ticketLink.addEventListener('click', handleTicketSelection);
         }
     });
 }
 
-// Initialize the ticket setup
+// Initialize the ticket system
 function initializeTicketSystem() {
     updateCashDisplay(loadCashAmount());
-    setupTicketEventListeners();
+    setupTickets();
 }
 
-// Call the function to initialize ticket system on page load
+// Run the ticket system initialization on page load
 initializeTicketSystem();
