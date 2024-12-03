@@ -85,6 +85,7 @@ function checkMatches(numberElement) {
     }
 
     saveCashAmount(cashAmount);
+    updateCashDisplay(cashAmount);
 }
 
 // Function to update the displayed cash amount
@@ -98,6 +99,8 @@ function updateCashDisplay(cashAmount) {
 // Function to animate the cash count-up to the new value over a fixed duration
 function animateCashCountUp(startValue, endValue, duration) {
     const cashAmountElement = document.querySelector('#cash-amount');
+    if (!cashAmountElement) return; // Ensure the element exists before starting the animation
+
     let startTime = null; // Initialize the start time
 
     // The update function is called recursively for smooth animation
