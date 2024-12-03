@@ -74,11 +74,14 @@ function checkMatches(numberElement) {
 
     // Check if the selected number matches any of the winning numbers
     if (winningNumbers.includes(selectedNumber)) {
-        cashAmount += 5; // Add $5 for each match
+        cashAmount += 5; // Add $5 for each match (Count-up)
         console.log('Match found! +$5');
         
         // Mark this number as matched by adding a class
         numberElement.classList.add('matched');
+    } else {
+        cashAmount -= 1; // Deduct $1 if no match (Count-down)
+        console.log('No match found! -$1');
     }
 
     saveCashAmount(cashAmount);
@@ -135,9 +138,12 @@ function handleRevealClick() {
 
             // Check if the user number matches any winning number
             if (winningNumbersArray.includes(userNumber)) {
-                cashAmount += 5; // Add $5 for each match
+                cashAmount += 5; // Add $5 for each match (Count-up)
                 console.log(`Match found for number ${userNumber}! +$5`);
                 userNumberElement.classList.add('matched'); // Mark as matched
+            } else {
+                cashAmount -= 1; // Deduct $1 for non-matching numbers (Count-down)
+                console.log(`No match for number ${userNumber}. -$1`);
             }
         }
     });
