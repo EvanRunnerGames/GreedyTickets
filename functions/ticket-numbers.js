@@ -16,10 +16,39 @@ function generateRandomNumber() {
     return Math.floor(Math.random() * 70) + 1; // Generates a number between 1 and 70
 }
 
+// Ensure we have exactly 3 winning numbers
+function generateWinningNumbers() {
+    const winningNumbers = [];
+    while (winningNumbers.length < 3) {
+        const randomNum = generateRandomNumber();
+        if (!winningNumbers.includes(randomNum)) {
+            winningNumbers.push(randomNum);
+        }
+    }
+    return winningNumbers;
+}
+
 // Initialize random numbers for all hidden-number elements
 function initializeHiddenNumbers() {
+    const winningNumbers = generateWinningNumbers(); // Generate exactly 3 winning numbers
+    const numbers = []; // Array to hold the final numbers for the hidden-number elements
+
     document.querySelectorAll('.hidden-number').forEach((hiddenNumberElement) => {
-        const randomNumber = generateRandomNumber();
+        let randomNumber;
+
+        // 1/3 chance that a number is a winning number
+        if (Math.random() < 1 / 3 && winningNumbers.length > 0) {
+            randomNumber = winningNumbers.pop(); // Take a winning number
+        } else {
+            do {
+                randomNumber = generateRandomNumber(); // Generate a random number
+            } while (numbers.includes(randomNumber)); // Ensure no duplicates
+        }
+
+        // Add the number to the final list
+        numbers.push(randomNumber);
+
+        // Display the number in the element
         hiddenNumberElement.textContent = randomNumber;
         hiddenNumberElement.dataset.value = randomNumber; // Store number in dataset
     });
