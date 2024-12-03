@@ -13,7 +13,7 @@ function loadCashAmount() {
 
 // Utility to generate random numbers
 function generateRandomNumber() {
-    return Math.floor(Math.random() * 30) + 1; // Generates a number between 1 and 30
+    return Math.floor(Math.random() * 70) + 1; // Generates a number between 1 and 70
 }
 
 // Initialize random numbers for all hidden-number elements
