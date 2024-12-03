@@ -58,37 +58,31 @@ ticketClaims.forEach(ticketClaim => {
 
 // THIS IS FOR SCROLLING ON THE HORIZONTAL TICKETS
 
+// Select the tickets-claiming container
 const ticketsClaiming = document.querySelector('.tickets-claiming');
 
-// Auto-scroll settings
+// Auto-scroll function (for continuous scrolling)
 let scrollSpeed = 2; // Speed of auto-scroll
-let isDragging = false;
-let startX, scrollLeft;
-let autoScrollInterval;
 
-// Auto-scroll function (creates continuous scrolling)
 function autoScroll() {
+    // Scroll the container by a small amount to the right
     ticketsClaiming.scrollLeft += scrollSpeed;
 
-    // Reset scroll to create infinite effect
-    if (ticketsClaiming.scrollLeft >= ticketsClaiming.scrollWidth / 2) {
+    // If the scroll reaches the end, reset it to the beginning
+    if (ticketsClaiming.scrollLeft + ticketsClaiming.clientWidth >= ticketsClaiming.scrollWidth) {
         ticketsClaiming.scrollLeft = 0;
     }
 }
 
-// Start auto-scrolling
-function startAutoScroll() {
-    autoScrollInterval = setInterval(autoScroll, 20);
-}
+// Start auto-scrolling (remove this line if you only want manual scrolling)
+setInterval(autoScroll, 20); // Adjust interval for speed
 
-// Stop auto-scrolling
-function stopAutoScroll() {
-    clearInterval(autoScrollInterval);
-}
+// Dragging functionality
+let isDragging = false;
+let startX;
+let scrollLeft;
 
-// Event listeners for drag-to-scroll
 ticketsClaiming.addEventListener('mousedown', (e) => {
-    stopAutoScroll(); // Stop auto-scroll during dragging
     isDragging = true;
     startX = e.pageX - ticketsClaiming.offsetLeft;
     scrollLeft = ticketsClaiming.scrollLeft;
@@ -96,28 +90,16 @@ ticketsClaiming.addEventListener('mousedown', (e) => {
 
 ticketsClaiming.addEventListener('mouseleave', () => {
     isDragging = false;
-    startAutoScroll(); // Resume auto-scroll when mouse leaves
 });
 
 ticketsClaiming.addEventListener('mouseup', () => {
     isDragging = false;
-    startAutoScroll(); // Resume auto-scroll when dragging stops
 });
 
 ticketsClaiming.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - ticketsClaiming.offsetLeft;
-    const walk = (x - startX) * 2; // Adjust this multiplier for drag sensitivity
+    const walk = (x - startX) * 2; // Scroll speed
     ticketsClaiming.scrollLeft = scrollLeft - walk;
-
-    // Reset to seamless scroll if dragging reaches the end
-    if (ticketsClaiming.scrollLeft < 0) {
-        ticketsClaiming.scrollLeft = ticketsClaiming.scrollWidth / 2;
-    } else if (ticketsClaiming.scrollLeft >= ticketsClaiming.scrollWidth / 2) {
-        ticketsClaiming.scrollLeft = 0;
-    }
 });
-
-// Initialize auto-scrolling on page load
-startAutoScroll();
