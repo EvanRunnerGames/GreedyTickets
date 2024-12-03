@@ -1,4 +1,4 @@
-// Constant for cash amount key in localStorage
+// Constants for cash amount key in localStorage
 const CASH_AMOUNT_KEY = 'cashAmount';
 
 // Save the cash amount to localStorage
@@ -79,13 +79,12 @@ function checkMatches(numberElement) {
         
         // Mark this number as matched by adding a class
         numberElement.classList.add('matched');
+
+        // Animate cash increase with a count-up effect
+        animateCashCountUp(loadCashAmount(), cashAmount, 800); // 0.8 seconds duration
     }
 
     saveCashAmount(cashAmount);
-    updateCashDisplay(cashAmount);
-
-    // Reset selected number after checking
-    selectedNumber = null;
 }
 
 // Function to update the displayed cash amount
@@ -94,6 +93,33 @@ function updateCashDisplay(cashAmount) {
     if (cashCounter) {
         cashCounter.textContent = `$${cashAmount}`;
     }
+}
+
+// Function to animate the cash count-up to the new value over a fixed duration
+function animateCashCountUp(startValue, endValue, duration) {
+    const cashAmountElement = document.querySelector('#cash-amount');
+    let startTime = null; // Initialize the start time
+
+    // The update function is called recursively for smooth animation
+    function updateCount(currentTime) {
+        if (!startTime) startTime = currentTime; // Set the start time on the first frame
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1); // Ensure progress doesn't exceed 1
+
+        // Calculate the current cash value based on progress
+        const currentAmount = Math.floor(startValue + (endValue - startValue) * progress);
+        cashAmountElement.textContent = `$${currentAmount}`;
+
+        // Continue the animation if we haven't reached the target
+        if (progress < 1) {
+            requestAnimationFrame(updateCount);
+        } else {
+            // Finalize at the end value
+            cashAmountElement.textContent = `$${endValue}`;
+        }
+    }
+
+    requestAnimationFrame(updateCount); // Start the animation
 }
 
 // Attach event listeners
