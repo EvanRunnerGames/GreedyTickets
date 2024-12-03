@@ -95,7 +95,7 @@ function checkMatches(numberElement) {
 function updateCashDisplay(cashAmount) {
     const cashCounter = document.querySelector('#cash-amount');
     if (cashCounter) {
-        cashCounter.textContent = `$${cashAmount}`;
+        cashCounter.textContent = `$${cashAmount}`; // Allow negative amounts to display
     }
 }
 
