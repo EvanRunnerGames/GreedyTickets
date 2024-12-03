@@ -1,12 +1,12 @@
 body {
-   background-image: url("../media/images/christmas-bg.png");
-   background-size: cover;
-   background-repeat: no-repeat;
-   background-position: center;
-}
-
-.christmas-ticket {
-    background-color: #063072 !important;
-    border-color: #002b6f !important;
-    margin-bottom: 40px;
-}
+    background-image: url("../media/images/christmas-bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+ }
+ 
+ .christmas-ticket {
+     background-color: #063072 !important;
+     border-color: #002b6f !important;
+     margin-bottom: 40px;
+ }

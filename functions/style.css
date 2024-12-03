@@ -42,6 +42,9 @@ a {
     justify-content: center;
     align-items: center;
     min-width: 200px;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .cash-logo {
@@ -85,36 +88,6 @@ footer {
     height: 65px;
     width: 100%;
     z-index: 10000000000000000000000000000;
-}
-
-.tickets-claiming {
-    padding: 20px;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    gap: 20px; /* Space between each ticket-claim */
-    scroll-snap-type: x mandatory; /* Snapping behavior */
-    scroll-behavior: smooth;
-    position: relative;
-}
-
-
-
-.ticket-claim {
-    width: 250px; /* Set a fixed width for each ticket-claim */
-    height: 350px; /* Set a fixed height for each ticket-claim */
-    background-color: #272526;
-
-    border: #e9dc67 solid 5px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden;
-    scroll-snap-align: center; /* Snap each item to the center when scrolling */
-    flex-shrink: 0; /* Prevent shrinking of the items */
 }
 
 .rolling-high-ticket {
@@ -223,6 +196,8 @@ footer {
     background-color: transparent;
     transform: translate(10px, -10px);
     font-size: 16px;
+    opacity: 1;
+    transition: all 0.18s ease-in-out;
 }
 
 .hidden-number {
@@ -281,13 +256,60 @@ footer {
     border-color: #51c11d !important;
 }
 
+.price {
+    z-index: 1322312131231232311233218543775347954379845375984347359887543789543785487438795437897584937859438795347584378587534789452;
+}
 .ticket-logo {
+    z-index: 1;
+}
+
+
+.tickets-claiming {
+    padding: 20px;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    gap: 20px; /* Space between each ticket-claim */
+    scroll-snap-type: x mandatory; /* Snapping behavior */
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+
+
+.ticket-claim {
+    width: 250px; /* Set a fixed width for each ticket-claim */
+    height: 350px; /* Set a fixed height for each ticket-claim */
+    background-color: #272526;
+    position: relative;
+    border: #e9dc67 solid 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    scroll-snap-align: center; /* Snap each item to the center when scrolling */
+    flex-shrink: 0; /* Prevent shrinking of the items */
     transition: all 0.18s ease-in-out;
 }
 
 .ticket-claim:hover .ticket-logo {
     cursor: pointer;
     scale: 1.1;
+}
+
+.ticket-claim:hover .price {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
 }

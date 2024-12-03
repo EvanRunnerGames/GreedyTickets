@@ -96,6 +96,57 @@ function updateCashDisplay(cashAmount) {
     }
 }
 
+// Function to handle the reveal click
+function handleRevealClick() {
+    console.log('Reveal button clicked'); // Debugging log
+
+    let cashAmount = loadCashAmount(); // Get current cash amount
+
+    // Select all winning-number elements
+    const winningNumbers = document.querySelectorAll('.winning-number');
+    const userNumbers = document.querySelectorAll('.number');
+
+    // Reveal hidden numbers and hide stars/prizes
+    winningNumbers.forEach((winningNumberElement) => {
+        const hiddenNumberElement = winningNumberElement.querySelector('.hidden-number');
+        const starElement = winningNumberElement.querySelector('.star');
+        
+        if (hiddenNumberElement && starElement) {
+            hiddenNumberElement.style.opacity = '1'; // Reveal hidden number
+            starElement.style.opacity = '0'; // Hide the star
+        }
+    });
+
+    userNumbers.forEach((userNumberElement) => {
+        const hiddenNumberElement = userNumberElement.querySelector('.hidden-number');
+        const prizeElement = userNumberElement.querySelector('.prize');
+
+        if (hiddenNumberElement && prizeElement) {
+            hiddenNumberElement.style.opacity = '1'; // Reveal the number
+            prizeElement.style.opacity = '0'; // Hide the prize
+        }
+
+        // Check for matches after revealing numbers
+        if (hiddenNumberElement) {
+            const userNumber = parseInt(hiddenNumberElement.dataset.value, 10);
+            const winningNumbersArray = Array.from(
+                document.querySelectorAll('.winning-number .hidden-number')
+            ).map((el) => parseInt(el.dataset.value, 10));
+
+            // Check if the user number matches any winning number
+            if (winningNumbersArray.includes(userNumber)) {
+                cashAmount += 5; // Add $5 for each match
+                console.log(`Match found for number ${userNumber}! +$5`);
+                userNumberElement.classList.add('matched'); // Mark as matched
+            }
+        }
+    });
+
+    // Save and update the cash display after checking matches
+    saveCashAmount(cashAmount);
+    updateCashDisplay(cashAmount);
+}
+
 // Attach event listeners
 function setupEventListeners() {
     document.querySelectorAll('.winning-number').forEach((winningNumberElement) => {
@@ -105,6 +156,12 @@ function setupEventListeners() {
     document.querySelectorAll('.number').forEach((numberElement) => {
         numberElement.addEventListener('click', handleNumberClick);
     });
+
+    // Attach the reveal functionality to the REVEAL button by ID
+    const revealButton = document.getElementById('reveal-numbers'); // Using the new ID
+    if (revealButton) {
+        revealButton.addEventListener('click', handleRevealClick); // Reveal numbers when clicked
+    }
 }
 
 // Reset game data
