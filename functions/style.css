@@ -261,6 +261,8 @@ footer {
 }
 .ticket-logo {
     z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -279,7 +281,6 @@ footer {
 }
 
 
-
 .ticket-claim {
     width: 250px; /* Set a fixed width for each ticket-claim */
     height: 350px; /* Set a fixed height for each ticket-claim */
@@ -288,12 +289,13 @@ footer {
     border: #e9dc67 solid 5px;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
     overflow: hidden;
     scroll-snap-align: center; /* Snap each item to the center when scrolling */
     flex-shrink: 0; /* Prevent shrinking of the items */
     transition: all 0.18s ease-in-out;
 }
+
+
 
 .ticket-claim:hover .ticket-logo {
     cursor: pointer;
@@ -311,5 +313,6 @@ footer {
     font-size: 20px;
     padding: 5px;
     border-radius: 4px;
+    width: 100%;
     transition: all 0.3s ease-in-out;
 }

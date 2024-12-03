@@ -58,31 +58,37 @@ ticketClaims.forEach(ticketClaim => {
 
 // THIS IS FOR SCROLLING ON THE HORIZONTAL TICKETS
 
-// Select the tickets-claiming container
 const ticketsClaiming = document.querySelector('.tickets-claiming');
 
-// Auto-scroll function (for continuous scrolling)
+// Auto-scroll settings
 let scrollSpeed = 2; // Speed of auto-scroll
+let isDragging = false;
+let startX, scrollLeft;
+let autoScrollInterval;
 
+// Auto-scroll function (creates continuous scrolling)
 function autoScroll() {
-    // Scroll the container by a small amount to the right
     ticketsClaiming.scrollLeft += scrollSpeed;
 
-    // If the scroll reaches the end, reset it to the beginning
-    if (ticketsClaiming.scrollLeft + ticketsClaiming.clientWidth >= ticketsClaiming.scrollWidth) {
+    // Reset scroll to create infinite effect
+    if (ticketsClaiming.scrollLeft >= ticketsClaiming.scrollWidth / 2) {
         ticketsClaiming.scrollLeft = 0;
     }
 }
 
-// Start auto-scrolling (remove this line if you only want manual scrolling)
-setInterval(autoScroll, 20); // Adjust interval for speed
+// Start auto-scrolling
+function startAutoScroll() {
+    autoScrollInterval = setInterval(autoScroll, 20);
+}
 
-// Dragging functionality
-let isDragging = false;
-let startX;
-let scrollLeft;
+// Stop auto-scrolling
+function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+}
 
+// Event listeners for drag-to-scroll
 ticketsClaiming.addEventListener('mousedown', (e) => {
+    stopAutoScroll(); // Stop auto-scroll during dragging
     isDragging = true;
     startX = e.pageX - ticketsClaiming.offsetLeft;
     scrollLeft = ticketsClaiming.scrollLeft;
@@ -90,16 +96,85 @@ ticketsClaiming.addEventListener('mousedown', (e) => {
 
 ticketsClaiming.addEventListener('mouseleave', () => {
     isDragging = false;
+    startAutoScroll(); // Resume auto-scroll when mouse leaves
 });
 
 ticketsClaiming.addEventListener('mouseup', () => {
     isDragging = false;
+    startAutoScroll(); // Resume auto-scroll when dragging stops
 });
 
 ticketsClaiming.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - ticketsClaiming.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed
+    const walk = (x - startX) * 2; // Adjust this multiplier for drag sensitivity
     ticketsClaiming.scrollLeft = scrollLeft - walk;
+
+    // Reset to seamless scroll if dragging reaches the end
+    if (ticketsClaiming.scrollLeft < 0) {
+        ticketsClaiming.scrollLeft = ticketsClaiming.scrollWidth / 2;
+    } else if (ticketsClaiming.scrollLeft >= ticketsClaiming.scrollWidth / 2) {
+        ticketsClaiming.scrollLeft = 0;
+    }
 });
+
+// Initialize auto-scrolling on page load
+startAutoScroll();
+
+
+//THIS IS FOR COUNTING UP OR DOWN TRANSITION
+
+let currentCashAmount = 0;
+
+function updateCashAmount(newAmount, duration = 1000) {
+    const cashElement = document.getElementById('cash-amount');
+    const currentAmount = currentCashAmount;
+    const difference = newAmount - currentAmount;
+    let startTime = null;
+
+    function animateCashAmount(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = timestamp - startTime;
+        const increment = Math.min(progress / duration, 1);
+        const amountToDisplay = currentAmount + Math.round(difference * increment);
+
+        cashElement.innerText = `$${amountToDisplay.toLocaleString()}`;
+
+        if (progress < duration) {
+            requestAnimationFrame(animateCashAmount);
+        } else {
+            cashElement.innerText = `$${newAmount.toLocaleString()}`; // Ensure it ends exactly at the new value
+            currentCashAmount = newAmount; // Update the current cash amount
+        }
+    }
+
+    requestAnimationFrame(animateCashAmount);
+}
+
+// This function will be called if the cash amount is updated manually in the DOM
+function syncCurrentCashAmount() {
+    const cashElement = document.getElementById('cash-amount');
+    const text = cashElement.innerText.replace('$', '').replace(',', '');
+    const newAmount = parseInt(text) || 0;
+
+    if (newAmount !== currentCashAmount) {
+        updateCashAmount(newAmount);
+    }
+}
+
+// Use MutationObserver to detect changes in the cash amount directly in the DOM
+const observer = new MutationObserver(syncCurrentCashAmount);
+
+// Observe changes in the text content of the cash-amount element
+observer.observe(document.getElementById('cash-amount'), {
+    childList: true, // Detect changes to child nodes (text content)
+    subtree: true // Observe all descendants (useful for nested structures)
+});
+
+// Example usage - whenever you want to update the cash amount in the script
+function setCashAmount(newAmount) {
+    if (newAmount !== currentCashAmount) {
+        updateCashAmount(newAmount);
+    }
+}
