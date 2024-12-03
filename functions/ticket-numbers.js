@@ -13,9 +13,8 @@ function loadCashAmount() {
 
 // Utility to generate random numbers
 function generateRandomNumber() {
-    return Math.floor(Math.random() * 45) + 1; // Generates a number between 1 and 45
+    return Math.floor(Math.random() * 30) + 1; // Generates a number between 1 and 30
 }
-
 
 // Ensure we have exactly 3 winning numbers
 function generateWinningNumbers() {
@@ -37,8 +36,8 @@ function initializeHiddenNumbers() {
     document.querySelectorAll('.hidden-number').forEach((hiddenNumberElement) => {
         let randomNumber;
 
-        // 1/3 chance that a number is a winning number
-        if (Math.random() < 1 / 3 && winningNumbers.length > 0) {
+        // Directly assign winning numbers to hidden-number elements
+        if (winningNumbers.length > 0) {
             randomNumber = winningNumbers.pop(); // Take a winning number
         } else {
             do {
