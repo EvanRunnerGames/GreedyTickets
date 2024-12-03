@@ -74,14 +74,11 @@ function checkMatches(numberElement) {
 
     // Check if the selected number matches any of the winning numbers
     if (winningNumbers.includes(selectedNumber)) {
-        cashAmount += 5; // Add $5 for each match (Count-up)
+        cashAmount += 5; // Add $5 for each match
         console.log('Match found! +$5');
         
         // Mark this number as matched by adding a class
         numberElement.classList.add('matched');
-    } else {
-        cashAmount -= 1; // Deduct $1 if no match (Count-down)
-        console.log('No match found! -$1');
     }
 
     saveCashAmount(cashAmount);
@@ -95,13 +92,20 @@ function checkMatches(numberElement) {
 function updateCashDisplay(cashAmount) {
     const cashCounter = document.querySelector('#cash-amount');
     if (cashCounter) {
-        cashCounter.textContent = `$${cashAmount}`; // Allow negative amounts to display
+        cashCounter.textContent = `$${cashAmount}`;
     }
 }
 
 // Function to handle the reveal click
 function handleRevealClick() {
     console.log('Reveal button clicked'); // Debugging log
+
+    // Select the reveal-numbers div and add the 'disabled-ticket' class
+    const revealButton = document.getElementById('reveal-numbers');
+    if (revealButton) {
+        revealButton.classList.add('disabled-ticket'); // Add the 'disabled-ticket' class
+        revealButton.style.opacity = 0.5; // Optional: visually indicate it's disabled
+    }
 
     let cashAmount = loadCashAmount(); // Get current cash amount
 
@@ -138,12 +142,9 @@ function handleRevealClick() {
 
             // Check if the user number matches any winning number
             if (winningNumbersArray.includes(userNumber)) {
-                cashAmount += 5; // Add $5 for each match (Count-up)
+                cashAmount += 5; // Add $5 for each match
                 console.log(`Match found for number ${userNumber}! +$5`);
                 userNumberElement.classList.add('matched'); // Mark as matched
-            } else {
-                cashAmount -= 1; // Deduct $1 for non-matching numbers (Count-down)
-                console.log(`No match for number ${userNumber}. -$1`);
             }
         }
     });
