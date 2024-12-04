@@ -28,6 +28,20 @@ a {
     text-decoration: none; /* Remove underline */
 }
 
+.ticket-logo_inner {
+    width: 100%;
+    height: 100%;
+}
+
+.fireball-7-title {
+    background-color: #b70002 !important;
+}
+
+.fireball-7-bg { 
+    border-color: #b70002 !important;
+    background: linear-gradient(#b70002, #ff00046e);
+}
+
 
 
 .cash-counter {
@@ -263,6 +277,21 @@ footer {
     z-index: 1;
     width: 100%;
     height: 100%;
+    transition: all 0.18s ease-in-out;
+}
+
+.big-dollars-bg {
+    background-image: url("../media/images/us-dollarbill.jpg");
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: 350px;
+    border-color: #195f06;
+}
+
+.big-dollars-inner {
+    background-color: #8ccd83 !important;
+    margin-top: 140px !important;
+    border-color: #009064 !important;
 }
 
 

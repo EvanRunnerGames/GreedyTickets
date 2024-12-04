@@ -13,13 +13,31 @@ function loadCashAmount() {
 
 // Utility to generate random numbers
 function generateRandomNumber() {
-    return Math.floor(Math.random() * 30) + 1; // Generates a number between 1 and 30
+    return Math.floor(Math.random() * 60) + 1; // Generates a number between 1 and 60
 }
 
-// Initialize random numbers for all hidden-number elements
-function initializeHiddenNumbers() {
-    document.querySelectorAll('.hidden-number').forEach((hiddenNumberElement) => {
-        const randomNumber = generateRandomNumber();
+// Function to initialize random numbers for .winning-number elements with no duplicates
+function initializeWinningNumbers() {
+    const usedNumbers = new Set(); // Set to track used numbers for winning numbers
+    
+    document.querySelectorAll('.winning-number .hidden-number').forEach((hiddenNumberElement) => {
+        let randomNumber;
+        
+        // Ensure the random number is unique for .winning-number elements
+        do {
+            randomNumber = generateRandomNumber();
+        } while (usedNumbers.has(randomNumber)); // If the number is already used, regenerate
+        
+        hiddenNumberElement.textContent = randomNumber;
+        hiddenNumberElement.dataset.value = randomNumber; // Store number in dataset
+        usedNumbers.add(randomNumber); // Add to set of used numbers for winning numbers
+    });
+}
+
+// Function to initialize random numbers for .number elements
+function initializeNumberElements() {
+    document.querySelectorAll('.number .hidden-number').forEach((hiddenNumberElement) => {
+        const randomNumber = generateRandomNumber(); // No need for duplicates check here
         hiddenNumberElement.textContent = randomNumber;
         hiddenNumberElement.dataset.value = randomNumber; // Store number in dataset
     });
@@ -38,6 +56,8 @@ function handleWinningNumberClick(event) {
         starElement.style.opacity = 0; // Hide star
         hiddenNumberElement.style.opacity = 1; // Show hidden number
     }
+
+    disableRevealButton(); // Disable reveal button after any number is clicked
 }
 
 // Function to handle when a .number is clicked
@@ -62,6 +82,8 @@ function handleNumberClick(event) {
     if (selectedNumber !== null) {
         checkMatches(numberElement);
     }
+
+    disableRevealButton(); // Disable reveal button after any number is clicked
 }
 
 // Function to check if a selected number matches any winning number
@@ -154,6 +176,26 @@ function handleRevealClick() {
     updateCashDisplay(cashAmount);
 }
 
+// Function to disable the reveal button
+function disableRevealButton() {
+    const revealButton = document.getElementById('reveal-numbers');
+    if (revealButton) {
+        revealButton.classList.add('disabled-ticket'); // Add disabled class
+        revealButton.style.opacity = 0.5; // Optional: visually indicate it's disabled
+        revealButton.removeEventListener('click', handleRevealClick); // Remove the reveal click event
+    }
+}
+
+// Function to enable the reveal button
+function enableRevealButton() {
+    const revealButton = document.getElementById('reveal-numbers');
+    if (revealButton) {
+        revealButton.classList.remove('disabled-ticket'); // Remove disabled class
+        revealButton.style.opacity = 1; // Restore opacity
+        revealButton.addEventListener('click', handleRevealClick); // Re-enable the reveal button click event
+    }
+}
+
 // Attach event listeners
 function setupEventListeners() {
     document.querySelectorAll('.winning-number').forEach((winningNumberElement) => {
@@ -175,16 +217,20 @@ function setupEventListeners() {
 function resetGame() {
     localStorage.setItem(CASH_AMOUNT_KEY, '0');
     updateCashDisplay(0);
-    initializeHiddenNumbers();
+    initializeWinningNumbers(); // Initialize unique winning numbers
+    initializeNumberElements(); // Initialize .number elements
     // Remove the 'matched' class from all numbers
     document.querySelectorAll('.number').forEach((numberElement) => {
         numberElement.classList.remove('matched');
     });
+
+    enableRevealButton(); // Re-enable the reveal button when the game is reset
 }
 
 // Initialize the game
 function initializeGame() {
-    initializeHiddenNumbers();
+    initializeWinningNumbers(); // Initialize unique winning numbers
+    initializeNumberElements(); // Initialize .number elements
     updateCashDisplay(loadCashAmount());
     setupEventListeners();
 }
